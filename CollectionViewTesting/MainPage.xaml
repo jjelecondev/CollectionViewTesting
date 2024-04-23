@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:CollectionViewTesting.ViewModels"
+             xmlns:components="clr-namespace:CollectionViewTesting.Views.Components"
+             xmlns:sho="http://sharpnado.com"
+             x:Class="CollectionViewTesting.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="AnnouncementTemplate" x:DataType="viewModels:AnnouncementVM">
+                <sho:DraggableViewCell>
+                    <Border
+        StrokeShape="RoundRectangle 8"
+        StrokeThickness="0"
+        Margin="8,0"
+        Padding="12">
+                        <Grid ColumnDefinitions="36,*"
+              ColumnSpacing="8">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AnnouncementTap}"></TapGestureRecognizer>
+                            </Grid.GestureRecognizers>
+                            <Border
+                HeightRequest="36"
+                WidthRequest="36"
+                StrokeShape="RoundRectangle 18"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                StrokeThickness="0"
+                Margin="0">
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label x:Name="Title" Text="Text" />
+                                <Label x:Name="Description" LineBreakMode="TailTruncation" MaxLines="3" Text="{Binding Description}" />
+                            </VerticalStackLayout>
+
+                        </Grid>
+                    </Border>
+                </sho:DraggableViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="ApprovalTemplate" x:DataType="viewModels:ApprovalVM">
+                <sho:DraggableViewCell>
+                    <Border
+        StrokeShape="RoundRectangle 8"
+        StrokeThickness="0"
+        HeightRequest="184"
+        Margin="8,0"
+        Padding="12">
+                        <Grid ColumnDefinitions="36,*"
+              ColumnSpacing="8">
+                            <Border
+                HeightRequest="36"
+                WidthRequest="36"
+                StrokeShape="RoundRectangle 18"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                StrokeThickness="0"
+                Margin="0">
+
+                            </Border>
+                            <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,*,Auto" VerticalOptions="Fill">
+                                <Label x:Name="UserName" Text="{Binding UserName}"  />
+                                <Label Grid.Row="1" LineBreakMode="TailTruncation" 
+                        Margin="0,0,0,4">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding OrgName}" />
+                                            <Span Text=" – " FontSize="14" />
+                                            <Span Text="{Binding ListName}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label Grid.Row="2" x:Name="Title" Text="Text" />
+                                <Label Grid.Row="3" x:Name="Description" Text="{Binding Description}"  />
+                                <Grid Grid.Row="4" ColumnDefinitions="*,*" VerticalOptions="End">
+                                    <Button x:Name="RejectButton" Margin="5,0,10,0"
+                            Text="Reject" Style="{StaticResource RejectButton}"/>
+                                    <Button Grid.Column="1" x:Name="ApproveButton" Margin="10,0,5,0"
+                            Command="{Binding ApproveCommand}" Text="Approve" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </sho:DraggableViewCell>
+            </DataTemplate>
+            <components:FeedDataTemplateSelector
+                x:Key="FeedDataTemplateSelector"
+                AnnouncementTemplate="{sho:SizedDataTemplate Template={StaticResource AnnouncementTemplate},Size=130}"
+                ApprovalTemplate="{sho:SizedDataTemplate Template={StaticResource ApprovalTemplate},Size=200}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <RefreshView x:Name="FeedRefresher"
+                 IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshFeedCommand}"
+                 Margin="0,60,0,0">
+        <sho:CollectionView
+                x:Name="FeedCollectionView"
+                CurrentIndex="0"
+                ItemSpacing="8"
+                ItemsSource="{Binding FeedItems}"
+                ItemTemplate="{StaticResource FeedDataTemplateSelector}"
+                CollectionLayout="Vertical">
+        </sho:CollectionView>
+    </RefreshView>
+
+</ContentPage>
