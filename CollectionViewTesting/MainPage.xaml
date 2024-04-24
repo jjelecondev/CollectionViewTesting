@@ -16,9 +16,6 @@
         Padding="12">
                         <Grid ColumnDefinitions="36,*"
               ColumnSpacing="8">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding AnnouncementTap}"></TapGestureRecognizer>
-                            </Grid.GestureRecognizers>
                             <Border
                 HeightRequest="36"
                 WidthRequest="36"
@@ -74,9 +71,8 @@
                                 <Label Grid.Row="3" x:Name="Description" Text="{Binding Description}"  />
                                 <Grid Grid.Row="4" ColumnDefinitions="*,*" VerticalOptions="End">
                                     <Button x:Name="RejectButton" Margin="5,0,10,0"
-                            Text="Reject" Style="{StaticResource RejectButton}"/>
-                                    <Button Grid.Column="1" x:Name="ApproveButton" Margin="10,0,5,0"
-                            Command="{Binding ApproveCommand}" Text="Approve" />
+                            Text="Reject" />
+                                    <Button Grid.Column="1" x:Name="ApproveButton" Margin="10,0,5,0" Text="Approve" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -89,7 +85,7 @@
                 ApprovalTemplate="{sho:SizedDataTemplate Template={StaticResource ApprovalTemplate},Size=200}"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <RefreshView x:Name="FeedRefresher"
+    <RefreshView x:Name="FeedRefresher" 
                  IsRefreshing="{Binding IsRefreshing}"
                  Command="{Binding RefreshFeedCommand}"
                  Margin="0,60,0,0">

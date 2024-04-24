@@ -1,4 +1,5 @@
 ﻿using CollectionViewTesting.Interfaces;
+using PrayMore.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,9 +9,20 @@ using System.Threading.Tasks;
 
 namespace CollectionViewTesting.ViewModels
 {
-    internal class MainPageVM
+    public class MainPageVM :BaseViewModel
     {
-        public bool IsRefreshing { get; set; } = false;
+        private bool isRefreshing = false;
+        public bool IsRefreshing
+        {
+            get
+            {
+                return isRefreshing;
+            }
+            set
+            {
+                SetProperty(ref isRefreshing, value);
+            } 
+        }
         private bool alreadyLoaded = false;
         public ObservableCollection<IFeedItem> FeedItems {get;set;} = new ObservableCollection<IFeedItem>();
         public Command RefreshFeedCommand { get; set; }
@@ -35,9 +47,10 @@ namespace CollectionViewTesting.ViewModels
         }
         public void DoRefresh(object obj)
         {
-            FeedItems.Clear();
+            FeedItems.Clear();// => FeedItems = new ObservableCollection<IFeedItem>();
             additems("-2");
             IsRefreshing = false;
         }
+
     }
 }
